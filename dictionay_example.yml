@@ -1,0 +1,47 @@
+---
+######################################################################
+###
+### This playbook shows how to:
+###  - set a simple dictionary variables
+###  - set a nested dictionay
+###  - print key and values for a simple dictionary
+###  - print key and values for a nested dictionary
+###  - print a single element of a nested dictionary
+###  - print a single element of a nested dictionary for a given key
+###
+#######################################################################
+- hosts: localhost
+  gather_facts: false
+  vars:
+    dictionary:
+      1: "val 1"
+      2: "val 2"
+    contact_list:
+      user1:
+        email: "user1.email@email.com"
+        numero: "12345"
+      user2:
+        email: "user2.email@email.com"
+        numero: "67890"
+
+  tasks:
+    - name: "Print simple dictionary"
+      debug:
+        msg: "{{item.key}} vale {{item.value}}"
+      with_dict: "{{dictionary}}"
+
+    - name: "Print nested dictionary"
+      debug:
+        msg: "{{item.key}} {{item.value}}"
+      with_dict: "{{contact_list}}"
+
+    - name: "Print email only from contact list"
+      debug:
+        msg: "{{item.key}} {{item.value.email}}"
+      with_dict: "{{contact_list}}"
+
+    - name: "Print"
+      debug:
+        msg: "{{item.key}} {{item.value.email}}"
+      when: item.key|string == "user1"
+      with_dict: "{{contact_list}}"
