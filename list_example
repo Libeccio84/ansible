@@ -1,0 +1,35 @@
+---
+#############################################
+###
+###  This playbook shows how to:
+###    - create an array on the fly and add element to it
+###    - print the first element of an array
+###    - print the last element of an array
+###
+#############################################
+- hosts: localhost
+  become: true
+  gather_facts: true
+  tasks:
+    - name: "Append elements to list"
+      set_fact:
+        disco: "{{ disk_list|default([]) }}  + [ '{{item.key|string}}' ]"
+      when:
+        - item.value.removable|string == "0"
+      with_dict: "{{ ansible_devices }}"
+
+    - name: "Print not removable disk list"
+      debug:
+        msg: "Not removable disks: {{ disk_list }}"
+
+    - name: "Print the first element former list"
+      debug:
+        msg: "First element: {{ disk_list[0] }}"
+
+    - name: "Again with disk_list | first"
+      debug:
+        msg: "First element: {{ disk_list | first }}"
+
+    - name: "Print the last element of disk list"
+      debug:
+        msg: "First element: {{ disk_list | last }}"
