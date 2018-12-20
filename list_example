@@ -13,7 +13,7 @@
   tasks:
     - name: "Append elements to list"
       set_fact:
-        disco: "{{ disk_list|default([]) }}  + [ '{{item.key|string}}' ]"
+        disck_list: "{{ disk_list|default([]) }}  + [ '{{item.key|string}}' ]"
       when:
         - item.value.removable|string == "0"
       with_dict: "{{ ansible_devices }}"
